@@ -1,0 +1,13 @@
+{
+  "name": "mongoAggregation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/crud.js"
+  },
+  "dependencies": {
+    "mongodb": "^4.7.0",
+    "nodemon": "^2.0.16"
+  }
+}
