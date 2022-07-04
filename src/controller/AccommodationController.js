@@ -3,9 +3,10 @@ const AccommodationService = require("../services/AccommodationService");
 const createAccommodations = async (req, res) => {
     try {
 
-        const { name, summary, property_type, bedrooms, bathrooms, beds } = req.body;
+        const accommodations = req.body;
+
         const accommodationService = new AccommodationService();
-        const accommodation = await accommodationService.createMultipleListings(name, summary, property_type, bedrooms, bathrooms, beds);
+        const accommodation = await accommodationService.createMultipleListings(accommodations);
 
         res.status(200).json({ accommodation })
 
@@ -14,5 +15,36 @@ const createAccommodations = async (req, res) => {
     }
 }
 
+const getAccommodationByName = async (req, res) => {
+    try {
 
-module.exports = { createAccommodations }
+        const { accommodation_name } = req.params;
+
+        const accommodationService = new AccommodationService();
+        const accommodation = await accommodationService.getSpecificAccommodation(accommodation_name);
+
+        res.status(200).json({ accommodation })
+
+    } catch (error) {
+        res.status(400).json({ message: "Error on retrieving accommodation", error: error.message })
+    }
+}
+
+const getTopAccommodationsByNumberOfBedroomsAndBathrooms = async (req, res) => {
+
+    try {
+
+        const { minimumNumberOfBedrooms, minimumNumberOfBathrooms } = req.body;
+
+        const accommodationService = new AccommodationService();
+        const response = await accommodationService.findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(minimumNumberOfBedrooms, minimumNumberOfBathrooms);
+
+        res.status(200).json(response)
+
+    } catch (error) {
+        res.status(400).json({ message: "Error on retrieving accommodation", error: error.message })
+    }
+}
+
+
+module.exports = { createAccommodations, getAccommodationByName, getTopAccommodationsByNumberOfBedroomsAndBathrooms }
