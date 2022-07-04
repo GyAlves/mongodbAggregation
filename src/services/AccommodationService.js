@@ -45,6 +45,16 @@ class AccommodationService {
 
     }
 
+    async getCheapestSuburbs(country, market, maxNumberToPrint) {
+
+        const accommodationRepository = new AccommodationRepository();
+
+        const results = await accommodationRepository.printCheapestSuburbs(country, market, maxNumberToPrint);
+
+        return results;
+
+    }
+
 }
 
 module.exports = AccommodationService;

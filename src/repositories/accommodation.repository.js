@@ -40,6 +40,42 @@ class AccommodationRepository {
         return results;
     }
 
+    async printCheapestSuburbs(country, market, maxNumberToPrint) {
+
+        const pipeline = [
+            {
+                '$match': {
+                    'bedrooms': 1,
+                    'address.country': country,
+                    'address.market': market,
+                    'address.suburb': {
+                        '$exists': 1,
+                        '$ne': ''
+                    },
+                    'room_type': 'Entire home/apt'
+                }
+            }, {
+                '$group': {
+                    '_id': '$address.suburb',
+                    'averagePrice': {
+                        '$avg': '$price'
+                    }
+                }
+            }, {
+                '$sort': {
+                    'averagePrice': 1
+                }
+            }, {
+                '$limit': maxNumberToPrint
+            }
+        ];
+
+        const aggCursor = this._mongodbConnection.client.db(this.databaseName).collection(this.collection).aggregate(pipeline);
+
+        return aggCursor;
+
+    }
+
 }
 
 module.exports = AccommodationRepository;

@@ -46,5 +46,23 @@ const getTopAccommodationsByNumberOfBedroomsAndBathrooms = async (req, res) => {
     }
 }
 
+const getCheapestSuburbs = async (req, res) => {
+    try {
 
-module.exports = { createAccommodations, getAccommodationByName, getTopAccommodationsByNumberOfBedroomsAndBathrooms }
+        const { country, market, maxNumberToPrint } = req.body;
+
+        const accommodationService = new AccommodationService();
+
+        const response = accommodationService.getCheapestSuburbs(country, market, maxNumberToPrint);
+
+        res.status(200).json(response);
+
+
+    } catch (error) {
+        res.status(400).json({ message: "Error on retrieving accommodations", error: error.message })
+
+    }
+}
+
+
+module.exports = { createAccommodations, getAccommodationByName, getTopAccommodationsByNumberOfBedroomsAndBathrooms, getCheapestSuburbs }
